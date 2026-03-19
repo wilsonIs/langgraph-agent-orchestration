@@ -1,0 +1,25 @@
+flowchart TD
+    U[Browser UI<br/>web/app.js] -->|POST /api/chat/stream| S[customer_service_server.py]
+    S -->|stream_customer_turn| G[LangGraph Graph]
+    G --> M[load_memory_node]
+    M --> P[planner_node]
+    P -->|smalltalk / recall_memory| A[assistant answer]
+    P -->|product_consultation / order_query| T[tool_node]
+    P -->|complaint / human_handoff / write_memory| H[human_review_node]
+    H -->|interrupt payload| U
+    U -->|POST /api/review/stream| S
+    S -->|Command resume| G
+    H -->|approved| T
+    H -->|rejected| A
+    T -->|ToolMessage| P
+    A --> R[NDJSON stream result]
+    R --> U
+
+    subgraph Persistence
+      C[MemorySaver checkpoint<br/>by thread_id]
+      Store[InMemoryStore<br/>profile, complaint, handoff]
+    end
+
+    G -. uses .-> C
+    M -. reads .-> Store
+    T -. writes .-> Store

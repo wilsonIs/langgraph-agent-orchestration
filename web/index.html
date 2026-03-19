@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support Studio</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="sidebar">
+        <div class="brand-card">
+          <p class="eyebrow">LangGraph Demo</p>
+          <h1>Support Studio</h1>
+          <p class="brand-copy">
+            用一个页面测试智能客服 Agent 的闲聊、产品咨询、订单查询、投诉处理和人工转接。
+          </p>
+        </div>
+
+        <section class="panel">
+          <div class="panel-title-row">
+            <h2>会话设置</h2>
+            <button id="new-thread-btn" class="ghost-btn" type="button">新会话</button>
+          </div>
+          <label class="field">
+            <span>User ID</span>
+            <input id="user-id-input" type="text" />
+          </label>
+          <label class="field">
+            <span>Thread ID</span>
+            <input id="thread-id-input" type="text" />
+          </label>
+        </section>
+
+        <section class="panel">
+          <h2>示例话术</h2>
+          <div class="prompt-grid">
+            <button class="prompt-chip" data-prompt="你好，今天辛苦了" type="button">闲聊</button>
+            <button class="prompt-chip" data-prompt="AeroBuds X1 的续航和保修是怎样的？" type="button">产品咨询</button>
+            <button class="prompt-chip" data-prompt="我的订单 SO-20260318-1001 现在到哪了？" type="button">订单查询</button>
+            <button class="prompt-chip" data-prompt="我要投诉，昨天收到的 HomeHub Mini 外壳有裂痕。" type="button">投诉处理</button>
+            <button class="prompt-chip" data-prompt="这个问题我想转人工客服处理。" type="button">人工客服</button>
+            <button class="prompt-chip" data-prompt="以后请默认用中文回复。" type="button">写入记忆</button>
+            <button class="prompt-chip" data-prompt="你还记得我的偏好吗？" type="button">跨会话记忆</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>调试面板</h2>
+          <dl class="debug-grid">
+            <div>
+              <dt>最近意图</dt>
+              <dd id="debug-intent">-</dd>
+            </div>
+            <div>
+              <dt>执行工具</dt>
+              <dd id="debug-tool">-</dd>
+            </div>
+            <div>
+              <dt>审批状态</dt>
+              <dd id="debug-approval">-</dd>
+            </div>
+          </dl>
+          <pre id="debug-events" class="debug-log">等待请求...</pre>
+        </section>
+      </aside>
+
+      <main class="chat-stage">
+        <section class="hero-card">
+          <p class="eyebrow">Customer Service Agent</p>
+          <h2>客服多意图编排测试台</h2>
+          <p>
+            当前版本支持基于 LangGraph 的意图路由、知识库检索、投诉审批、人工转接与跨会话记忆。
+          </p>
+        </section>
+
+        <section id="chat-log" class="chat-log"></section>
+
+        <section id="review-panel" class="review-panel hidden">
+          <div class="review-header">
+            <div>
+              <p class="eyebrow">Human In The Loop</p>
+              <h3>关键操作等待人工确认</h3>
+            </div>
+            <span class="status-pill">Paused</span>
+          </div>
+          <div id="review-summary" class="review-summary"></div>
+          <label class="field">
+            <span>审核备注</span>
+            <input id="review-note-input" type="text" placeholder="例如：允许创建投诉工单" />
+          </label>
+          <div class="review-actions">
+            <button id="approve-btn" class="primary-btn" type="button">批准并继续</button>
+            <button id="reject-btn" class="secondary-btn" type="button">拒绝本次操作</button>
+          </div>
+        </section>
+
+        <form id="composer-form" class="composer">
+          <textarea
+            id="message-input"
+            rows="3"
+            placeholder="输入一句话，测试客服 Agent 的不同意图..."
+          ></textarea>
+          <div class="composer-actions">
+            <span id="status-text" class="status-text">服务就绪</span>
+            <button id="send-btn" class="primary-btn" type="submit">发送消息</button>
+          </div>
+        </form>
+      </main>
+    </div>
+
+    <template id="message-template">
+      <article class="message">
+        <div class="message-meta"></div>
+        <div class="message-bubble"></div>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
